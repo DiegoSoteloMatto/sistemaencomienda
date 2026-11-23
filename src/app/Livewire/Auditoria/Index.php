@@ -28,12 +28,12 @@ class Index extends Component
         $logs = AuditLog::with('user')
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
-                    $sub->where('description', 'ilike', "%{$this->search}%")
-                        ->orWhere('action', 'ilike', "%{$this->search}%")
+                    $sub->where('description', 'like', "%{$this->search}%")
+                        ->orWhere('action', 'like', "%{$this->search}%")
                         ->orWhere('ip_address', 'like', "%{$this->search}%")
                         ->orWhereHas('user', function ($u) {
-                            $u->where('name', 'ilike', "%{$this->search}%")
-                              ->orWhere('email', 'ilike', "%{$this->search}%");
+                            $u->where('name', 'like', "%{$this->search}%")
+                              ->orWhere('email', 'like', "%{$this->search}%");
                         });
                 });
             })

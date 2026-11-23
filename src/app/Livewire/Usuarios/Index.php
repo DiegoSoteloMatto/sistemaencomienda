@@ -125,8 +125,8 @@ class Index extends Component
         $query = User::with('roles')
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
-                    $sub->where('name', 'ilike', "%{$this->search}%")
-                        ->orWhere('email', 'ilike', "%{$this->search}%");
+                    $sub->where('name', 'like', "%{$this->search}%")
+                        ->orWhere('email', 'like', "%{$this->search}%");
                 });
             })
             ->when($this->selectedRole, function ($q) {

@@ -120,11 +120,11 @@ class Index extends Component
         $clientes = Cliente::query()
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
-                    $sub->where('nombre', 'ilike', "%{$this->search}%")
-                        ->orWhere('apellido', 'ilike', "%{$this->search}%")
-                        ->orWhere('documento_numero', 'ilike', "%{$this->search}%")
+                    $sub->where('nombre', 'like', "%{$this->search}%")
+                        ->orWhere('apellido', 'like', "%{$this->search}%")
+                        ->orWhere('documento_numero', 'like', "%{$this->search}%")
                         ->orWhere('telefono', 'like', "%{$this->search}%")
-                        ->orWhere('correo_electronico', 'ilike', "%{$this->search}%");
+                        ->orWhere('correo_electronico', 'like', "%{$this->search}%");
                 });
             })
             ->orderBy('id', 'desc')

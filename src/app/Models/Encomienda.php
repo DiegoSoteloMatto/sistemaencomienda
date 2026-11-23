@@ -6,12 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use InvalidArgumentException;
 
 class Encomienda extends Model
 {
     use HasFactory;
 
     protected $table = 'encomiendas';
+
+    public const ESTADOS = [
+        'recibido' => 'Recibido en Origen',
+        'clasificacion' => 'En Clasificación',
+        'transito' => 'En Tránsito / Despachado',
+        'arribado' => 'Arribado a Destino',
+        'reparto' => 'En Reparto',
+        'entregado' => 'Entregado',
+        'incidencia' => 'Con Incidencia',
+    ];
 
     protected $fillable = [
         'tracking_id',
@@ -52,6 +63,64 @@ class Encomienda extends Model
             $nextNumber = '00001';
         }
         return $prefix . $nextNumber;
+    }
+
+    public function getEstadoLabelAttribute(): string
+    {
+        return self::ESTADOS[$this->estado_actual] ?? ucfirst($this->estado_actual);
+    }
+
+    /**
+     * Define las transiciones de estado permitidas según las reglas del PRD (RF-04.1)
+     */
+    public function transicionesPermitidas(): array
+    {
+        return match ($this->estado_actual) {
+            'recibido' => ['clasificacion', 'incidencia'],
+            'clasificacion' => ['transito', 'incidencia'],
+            'transito' => ['arribado', 'incidencia'],
+            'arribado' => ['reparto', 'incidencia'],
+            'reparto' => ['entregado', 'incidencia'],
+            'incidencia' => ['clasificacion', 'reparto', 'recibido'],
+            'entregado' => [],
+            default => ['recibido'],
+        };
+    }
+
+    /**
+     * Aplica el cambio de estado registrando en historial y auditoría
+     */
+    public function cambiarEstado(string $nuevoEstado, ?string $observaciones = null, ?int $userId = null, ?int $repartidorId = null): void
+    {
+        $permitidas = $this->transicionesPermitidas();
+        if (!in_array($nuevoEstado, $permitidas)) {
+            throw new InvalidArgumentException("La transición de '{$this->estado_actual}' a '{$nuevoEstado}' no está permitida.");
+        }
+
+        $estadoAnterior = $this->estado_actual;
+        $this->estado_actual = $nuevoEstado;
+
+        if ($repartidorId !== null) {
+            $this->repartidor_id = $repartidorId;
+        }
+
+        $this->save();
+
+        HistorialEstado::create([
+            'encomienda_id' => $this->id,
+            'estado_anterior' => $estadoAnterior,
+            'estado_nuevo' => $nuevoEstado,
+            'observaciones' => $observaciones ?: "Estado actualizado a '{$nuevoEstado}'",
+            'user_id' => $userId ?? auth()->id(),
+            'timestamp' => now(),
+        ]);
+
+        AuditLog::log(
+            'cambio_estado_encomienda',
+            'Encomienda',
+            $this->id,
+            "Encomienda {$this->tracking_id}: {$estadoAnterior} -> {$nuevoEstado}. Obs: {$observaciones}"
+        );
     }
 
     protected static function booted(): void

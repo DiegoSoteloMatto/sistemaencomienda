@@ -9,6 +9,7 @@ use App\Models\HistorialEstado;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use InvalidArgumentException;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -175,5 +176,128 @@ class EncomiendasSystemTest extends TestCase
         $response->assertSee($encomienda->tracking_id);
         $response->assertSee('Mario Britez');
         $response->assertSee('Laura Aquino');
+    }
+
+    public function test_fase5_flujo_completo_de_estados_logicos(): void
+    {
+        $operador = User::where('email', 'operador@encomiendas.com')->first();
+        $repartidor = User::where('email', 'repartidor@encomiendas.com')->first();
+        $this->actingAs($operador);
+
+        $emisor = Cliente::create([
+            'nombre' => 'Ana',
+            'apellido' => 'Vera',
+            'documento_tipo' => 'CI',
+            'documento_numero' => '5555555',
+            'telefono' => '0985555555',
+        ]);
+
+        $receptor = Cliente::create([
+            'nombre' => 'Pedro',
+            'apellido' => 'Duarte',
+            'documento_tipo' => 'CI',
+            'documento_numero' => '6666666',
+            'telefono' => '0986666666',
+        ]);
+
+        $encomienda = Encomienda::create([
+            'cliente_emisor_id' => $emisor->id,
+            'cliente_receptor_id' => $receptor->id,
+            'origen' => 'Encarnación',
+            'destino' => 'Asunción',
+            'peso_kg' => 2.0,
+            'costo_servicio' => 20000,
+            'estado_actual' => 'recibido',
+            'operador_id' => $operador->id,
+        ]);
+
+        // 1. Recibido -> Clasificación
+        $encomienda->cambiarEstado('clasificacion', 'Paquete en depósito para clasificar');
+        $this->assertEquals('clasificacion', $encomienda->fresh()->estado_actual);
+
+        // 2. Clasificación -> Tránsito
+        $encomienda->cambiarEstado('transito', 'Despachado en camión hacia destino');
+        $this->assertEquals('transito', $encomienda->fresh()->estado_actual);
+
+        // 3. Tránsito -> Arribado
+        $encomienda->cambiarEstado('arribado', 'Llegada a sucursal de destino');
+        $this->assertEquals('arribado', $encomienda->fresh()->estado_actual);
+
+        // 4. Arribado -> Reparto (asignando repartidor)
+        $encomienda->cambiarEstado('reparto', 'Asignado a móvil de reparto', null, $repartidor->id);
+        $this->assertEquals('reparto', $encomienda->fresh()->estado_actual);
+        $this->assertEquals($repartidor->id, $encomienda->fresh()->repartidor_id);
+
+        // 5. Reparto -> Entregado
+        $encomienda->cambiarEstado('entregado', 'Entregado a Pedro Duarte con CI 6666666');
+        $this->assertEquals('entregado', $encomienda->fresh()->estado_actual);
+
+        // Verificar que hay 6 registros en historial_estados (1 inicial + 5 transiciones)
+        $this->assertCount(6, $encomienda->fresh()->historialEstados);
+    }
+
+    public function test_fase5_transicion_invalida_lanza_excepcion(): void
+    {
+        $operador = User::where('email', 'operador@encomiendas.com')->first();
+        $this->actingAs($operador);
+
+        $emisor = Cliente::create([
+            'nombre' => 'Test',
+            'apellido' => 'Test',
+            'documento_tipo' => 'CI',
+            'documento_numero' => '7777777',
+            'telefono' => '0987777777',
+        ]);
+
+        $encomienda = Encomienda::create([
+            'cliente_emisor_id' => $emisor->id,
+            'cliente_receptor_id' => $emisor->id,
+            'origen' => 'Encarnación',
+            'destino' => 'Asunción',
+            'peso_kg' => 1.0,
+            'costo_servicio' => 15000,
+            'estado_actual' => 'recibido',
+            'operador_id' => $operador->id,
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        // Intentar pasar directamente de recibido a entregado sin pasar por etapas intermedias
+        $encomienda->cambiarEstado('entregado');
+    }
+
+    public function test_fase6_rastreo_publico_accesible_sin_login(): void
+    {
+        // Petición sin autenticar a /tracking
+        $response = $this->get(route('tracking'));
+        $response->assertStatus(200);
+        $response->assertSee('Consulta y Trazabilidad de Envíos');
+    }
+
+    public function test_fase6_rastreo_publico_encuentra_paquete(): void
+    {
+        $emisor = Cliente::create([
+            'nombre' => 'Publico',
+            'apellido' => 'Emisor',
+            'documento_tipo' => 'CI',
+            'documento_numero' => '8888888',
+            'telefono' => '0988888888',
+        ]);
+
+        $encomienda = Encomienda::create([
+            'cliente_emisor_id' => $emisor->id,
+            'cliente_receptor_id' => $emisor->id,
+            'origen' => 'Encarnación',
+            'destino' => 'Ciudad del Este',
+            'peso_kg' => 1.2,
+            'costo_servicio' => 18000,
+            'estado_actual' => 'recibido',
+        ]);
+
+        $response = $this->get(route('tracking', ['codigo' => $encomienda->tracking_id]));
+        $response->assertStatus(200);
+        $response->assertSee($encomienda->tracking_id);
+        $response->assertSee('Encarnación');
+        $response->assertSee('Ciudad del Este');
+        $response->assertSee('Historial Cronológico de Movimientos');
     }
 }

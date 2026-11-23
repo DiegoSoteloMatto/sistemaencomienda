@@ -200,7 +200,7 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
                                       ↘ Incidencia (Devuelto / Retenido)
 ```
 
-- [ ] Migración de tabla `historial_estados`:
+- [x] Migración de tabla `historial_estados`:
   ```sql
   historial_estados (
     id, encomienda_id (FK), estado_anterior, estado_nuevo,
@@ -208,14 +208,14 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
     created_at
   )
   ```
-- [ ] Lógica de negocio para validar transiciones de estado permitidas
-- [ ] Componente Livewire para cambio de estado con campo de observaciones
-- [ ] Restricción de estados según rol del usuario (Operador vs. Repartidor)
+- [x] Lógica de negocio para validar transiciones de estado permitidas
+- [x] Componente Livewire para cambio de estado con campo de observaciones
+- [x] Restricción de estados según rol del usuario (Operador vs. Repartidor)
 
 #### 5.2 Vista para Repartidor
-- [ ] Listado de encomiendas asignadas al repartidor logueado
-- [ ] Botones de acción: "Marcar en Tránsito", "Registrar Entrega", "Reportar Incidencia"
-- [ ] Registro de acuse de recibo (firma o confirmación digital básica)
+- [x] Listado de encomiendas asignadas al repartidor logueado
+- [x] Botones de acción: "Marcar en Tránsito", "Registrar Entrega", "Reportar Incidencia"
+- [x] Registro de acuse de recibo (firma o confirmación digital básica)
 
 ### Entregables de la Fase 5
 - Flujo de estados completo con historial y timestamps
@@ -230,15 +230,15 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
 ### Tareas
 
 #### 6.1 Portal de Consulta Pública
-- [ ] Ruta pública `/tracking` accesible sin autenticación (RF-05.1)
-- [ ] Formulario de búsqueda con campo Tracking ID o número de guía
-- [ ] Componente Livewire para actualización dinámica de resultados
+- [x] Ruta pública `/tracking` accesible sin autenticación (RF-05.1)
+- [x] Formulario de búsqueda con campo Tracking ID o número de guía
+- [x] Componente Livewire para actualización dinámica de resultados
 
 #### 6.2 Vista de Resultado del Seguimiento (RF-05.2)
-- [ ] Mostrar estado actual del paquete con ícono visual
-- [ ] Línea de tiempo (timeline) del historial completo de estados
-- [ ] Informar: estado actual, ubicación aproximada / centro de acopio, fecha de última actualización
-- [ ] Diseño responsivo amigable para móviles con Tailwind CSS
+- [x] Mostrar estado actual del paquete con ícono visual
+- [x] Línea de tiempo (timeline) del historial completo de estados
+- [x] Informar: estado actual, ubicación aproximada / centro de acopio, fecha de última actualización
+- [x] Diseño responsivo amigable para móviles con Tailwind CSS
 
 ### Entregables de la Fase 6
 - Portal público de trazabilidad operativo

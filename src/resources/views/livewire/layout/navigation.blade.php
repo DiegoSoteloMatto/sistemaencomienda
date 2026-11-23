@@ -42,6 +42,12 @@ new class extends Component
                         Clientes
                     </x-nav-link>
 
+                    @if(auth()->user()->hasRole('Repartidor') || auth()->user()->hasRole('Administrador'))
+                        <x-nav-link :href="route('repartos.index')" :active="request()->routeIs('repartos.*')" wire:navigate>
+                            Repartos
+                        </x-nav-link>
+                    @endif
+
                     @if(auth()->user()->hasRole('Administrador'))
                         <x-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')" wire:navigate>
                             Usuarios
@@ -51,6 +57,10 @@ new class extends Component
                             Auditoría
                         </x-nav-link>
                     @endif
+
+                    <x-nav-link :href="route('tracking')" target="_blank">
+                        Rastreo Público &UpperRightArrow;
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -114,6 +124,12 @@ new class extends Component
                 Clientes
             </x-responsive-nav-link>
 
+            @if(auth()->user()->hasRole('Repartidor') || auth()->user()->hasRole('Administrador'))
+                <x-responsive-nav-link :href="route('repartos.index')" :active="request()->routeIs('repartos.*')" wire:navigate>
+                    Repartos
+                </x-responsive-nav-link>
+            @endif
+
             @if(auth()->user()->hasRole('Administrador'))
                 <x-responsive-nav-link :href="route('usuarios.index')" :active="request()->routeIs('usuarios.*')" wire:navigate>
                     Usuarios
@@ -123,6 +139,10 @@ new class extends Component
                     Auditoría
                 </x-responsive-nav-link>
             @endif
+
+            <x-responsive-nav-link :href="route('tracking')" target="_blank">
+                Rastreo Público &UpperRightArrow;
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

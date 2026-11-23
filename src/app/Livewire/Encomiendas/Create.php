@@ -183,18 +183,18 @@ class Create extends Component
     {
         $emisores = [];
         if (strlen($this->searchEmisor) >= 2) {
-            $emisores = Cliente::where('nombre', 'ilike', "%{$this->searchEmisor}%")
-                ->orWhere('apellido', 'ilike', "%{$this->searchEmisor}%")
-                ->orWhere('documento_numero', 'ilike', "%{$this->searchEmisor}%")
+            $emisores = Cliente::where('nombre', 'like', "%{$this->searchEmisor}%")
+                ->orWhere('apellido', 'like', "%{$this->searchEmisor}%")
+                ->orWhere('documento_numero', 'like', "%{$this->searchEmisor}%")
                 ->take(6)
                 ->get();
         }
 
         $receptores = [];
         if (strlen($this->searchReceptor) >= 2) {
-            $receptores = Cliente::where('nombre', 'ilike', "%{$this->searchReceptor}%")
-                ->orWhere('apellido', 'ilike', "%{$this->searchReceptor}%")
-                ->orWhere('documento_numero', 'ilike', "%{$this->searchReceptor}%")
+            $receptores = Cliente::where('nombre', 'like', "%{$this->searchReceptor}%")
+                ->orWhere('apellido', 'like', "%{$this->searchReceptor}%")
+                ->orWhere('documento_numero', 'like', "%{$this->searchReceptor}%")
                 ->take(6)
                 ->get();
         }

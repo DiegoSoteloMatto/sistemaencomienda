@@ -30,18 +30,18 @@ class Index extends Component
         $encomiendas = Encomienda::with(['emisor', 'receptor', 'operador'])
             ->when($this->search, function ($q) {
                 $q->where(function ($sub) {
-                    $sub->where('tracking_id', 'ilike', "%{$this->search}%")
-                        ->orWhere('origen', 'ilike', "%{$this->search}%")
-                        ->orWhere('destino', 'ilike', "%{$this->search}%")
+                    $sub->where('tracking_id', 'like', "%{$this->search}%")
+                        ->orWhere('origen', 'like', "%{$this->search}%")
+                        ->orWhere('destino', 'like', "%{$this->search}%")
                         ->orWhereHas('emisor', function ($e) {
-                            $e->where('nombre', 'ilike', "%{$this->search}%")
-                              ->orWhere('apellido', 'ilike', "%{$this->search}%")
-                              ->orWhere('documento_numero', 'ilike', "%{$this->search}%");
+                            $e->where('nombre', 'like', "%{$this->search}%")
+                              ->orWhere('apellido', 'like', "%{$this->search}%")
+                              ->orWhere('documento_numero', 'like', "%{$this->search}%");
                         })
                         ->orWhereHas('receptor', function ($r) {
-                            $r->where('nombre', 'ilike', "%{$this->search}%")
-                              ->orWhere('apellido', 'ilike', "%{$this->search}%")
-                              ->orWhere('documento_numero', 'ilike', "%{$this->search}%");
+                            $r->where('nombre', 'like', "%{$this->search}%")
+                              ->orWhere('apellido', 'like', "%{$this->search}%")
+                              ->orWhere('documento_numero', 'like', "%{$this->search}%");
                         });
                 });
             })
