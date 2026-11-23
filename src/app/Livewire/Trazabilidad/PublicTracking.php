@@ -32,7 +32,7 @@ class PublicTracking extends Component
             return;
         }
 
-        $this->encomienda = Encomienda::with(['historialEstados'])
+        $this->encomienda = Encomienda::with(['historialEstados', 'emisor', 'receptor'])
             ->whereRaw('LOWER(tracking_id) = ?', [strtolower($this->codigo)])
             ->first();
     }
@@ -40,6 +40,6 @@ class PublicTracking extends Component
     public function render()
     {
         return view('livewire.trazabilidad.public-tracking')
-            ->layout('layouts.guest');
+            ->layout('layouts.tracking');
     }
 }
