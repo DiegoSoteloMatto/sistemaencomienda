@@ -300,4 +300,114 @@ class EncomiendasSystemTest extends TestCase
         $response->assertSee('Ciudad del Este');
         $response->assertSee('Historial Cronológico de Movimientos');
     }
+
+    // ─────────────────────────── FASE 7 – Reportes ───────────────────────────
+
+    public function test_fase7_admin_puede_acceder_a_reportes(): void
+    {
+        $admin = User::where('email', 'admin@encomiendas.com')->first();
+
+        $response = $this->actingAs($admin)->get(route('reportes.index'));
+        $response->assertStatus(200);
+    }
+
+    public function test_fase7_operador_no_puede_acceder_a_reportes(): void
+    {
+        $operador = User::where('email', 'operador@encomiendas.com')->first();
+
+        $response = $this->actingAs($operador)->get(route('reportes.index'));
+        // Debe redirigir o devolver 403 – el middleware de rol protege la ruta
+        $this->assertContains($response->status(), [302, 403]);
+    }
+
+    public function test_fase7_exportar_csv_devuelve_adjunto(): void
+    {
+        $admin = User::where('email', 'admin@encomiendas.com')->first();
+
+        // Crear una encomienda para que el CSV no esté vacío
+        $cliente = Cliente::create([
+            'nombre' => 'CSV',
+            'apellido' => 'Test',
+            'documento_tipo' => 'CI',
+            'documento_numero' => '9000001',
+            'telefono' => '0990000001',
+        ]);
+        Encomienda::create([
+            'cliente_emisor_id' => $cliente->id,
+            'cliente_receptor_id' => $cliente->id,
+            'origen' => 'Encarnación',
+            'destino' => 'Asunción',
+            'peso_kg' => 1.0,
+            'costo_servicio' => 10000,
+            'estado_actual' => 'recibido',
+            'operador_id' => $admin->id,
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('reportes.csv'));
+        $response->assertStatus(200);
+        $response->assertHeader('content-type', 'text/csv; charset=UTF-8');
+        $this->assertStringContainsString('attachment', $response->headers->get('content-disposition'));
+    }
+
+    public function test_fase7_exportar_pdf_devuelve_pdf(): void
+    {
+        $admin = User::where('email', 'admin@encomiendas.com')->first();
+
+        $response = $this->actingAs($admin)->get(route('reportes.pdf'));
+        $response->assertStatus(200);
+        $response->assertHeader('content-type', 'application/pdf');
+    }
+
+    // ─────────────────────────── FASE 8 – Seguridad / RBAC ───────────────────
+
+    public function test_fase8_rbac_operador_no_accede_a_usuarios_ni_auditoria(): void
+    {
+        $operador = User::where('email', 'operador@encomiendas.com')->first();
+
+        $rutasAdmin = [
+            route('usuarios.index'),
+            route('auditoria.index'),
+            route('reportes.index'),
+        ];
+
+        foreach ($rutasAdmin as $ruta) {
+            $response = $this->actingAs($operador)->get($ruta);
+            $this->assertContains(
+                $response->status(),
+                [302, 403],
+                "La ruta {$ruta} debe estar protegida para Operadores"
+            );
+        }
+    }
+
+    public function test_fase8_rbac_repartidor_no_accede_a_admin_routes(): void
+    {
+        $repartidor = User::where('email', 'repartidor@encomiendas.com')->first();
+
+        $response = $this->actingAs($repartidor)->get(route('usuarios.index'));
+        $this->assertContains($response->status(), [302, 403]);
+    }
+
+    public function test_fase8_usuario_no_autenticado_redirigido_al_login(): void
+    {
+        $rutasProtegidas = [
+            route('dashboard'),
+            route('encomiendas.index'),
+            route('clientes.index'),
+            route('usuarios.index'),
+            route('reportes.index'),
+        ];
+
+        foreach ($rutasProtegidas as $ruta) {
+            $response = $this->get($ruta);
+            $response->assertRedirect(route('login'));
+        }
+    }
+
+    public function test_fase8_csrf_presente_en_formularios_auth(): void
+    {
+        $response = $this->get(route('login'));
+        $response->assertStatus(200);
+        $response->assertSee('csrf', false); // Verifica que el token CSRF está presente en el HTML
+    }
 }

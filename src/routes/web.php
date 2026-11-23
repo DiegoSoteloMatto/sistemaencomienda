@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\EtiquetaController;
+use App\Http\Controllers\ReporteExportController;
 use App\Livewire\Auditoria\Index as AuditoriaIndex;
 use App\Livewire\Clientes\Index as ClientesIndex;
 use App\Livewire\Encomiendas\Create as EncomiendaCreate;
 use App\Livewire\Encomiendas\Index as EncomiendasIndex;
 use App\Livewire\Encomiendas\Show as EncomiendaShow;
 use App\Livewire\Repartidor\Index as RepartidorIndex;
+use App\Livewire\Reportes\Index as ReportesIndex;
 use App\Livewire\Trazabilidad\PublicTracking;
 use App\Livewire\Usuarios\Index as UsuariosIndex;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,11 @@ Route::middleware(['auth'])->group(function () {
     // Administración y Auditoría (Fase 2)
     Route::get('usuarios', UsuariosIndex::class)->name('usuarios.index');
     Route::get('auditoria', AuditoriaIndex::class)->name('auditoria.index');
+
+    // Reportes Operativos (Fase 7)
+    Route::get('reportes', ReportesIndex::class)->name('reportes.index');
+    Route::get('reportes/exportar-csv', [ReporteExportController::class, 'exportarCsv'])->name('reportes.csv');
+    Route::get('reportes/exportar-pdf', [ReporteExportController::class, 'exportarPdf'])->name('reportes.pdf');
 });
 
 require __DIR__.'/auth.php';

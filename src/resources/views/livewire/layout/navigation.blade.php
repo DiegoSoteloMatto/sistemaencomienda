@@ -56,6 +56,10 @@ new class extends Component
                         <x-nav-link :href="route('auditoria.index')" :active="request()->routeIs('auditoria.*')" wire:navigate>
                             Auditoría
                         </x-nav-link>
+
+                        <x-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')" wire:navigate>
+                            Reportes
+                        </x-nav-link>
                     @endif
 
                     <x-nav-link :href="route('tracking')" target="_blank">
@@ -137,6 +141,10 @@ new class extends Component
 
                 <x-responsive-nav-link :href="route('auditoria.index')" :active="request()->routeIs('auditoria.*')" wire:navigate>
                     Auditoría
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')" wire:navigate>
+                    Reportes
                 </x-responsive-nav-link>
             @endif
 

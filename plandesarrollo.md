@@ -253,19 +253,19 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
 ### Tareas
 
 #### 7.1 Reportes
-- [ ] Reporte de volumen de encomiendas por periodo (RF-06.1):
+- [x] Reporte de volumen de encomiendas por periodo (RF-06.1):
   - Filtros: rango de fechas, origen, destino
   - Gráfico de barras o línea (puede usar Chart.js via Alpine.js)
   - Exportación a PDF o CSV
 
-- [ ] Reporte de tiempos promedio de tránsito entre estados (RF-06.2):
+- [x] Reporte de tiempos promedio de tránsito entre estados (RF-06.2):
   - Análisis de tiempos entre `historial_estados`
   - Identificación de cuellos de botella en el flujo logístico
 
 #### 7.2 Dashboard Principal (Administrador)
-- [ ] Resumen: total de encomiendas por estado (tarjetas KPI)
-- [ ] Encomiendas recientes
-- [ ] Alertas de encomiendas con incidencias o sin actualización reciente
+- [x] Resumen: total de encomiendas por estado (tarjetas KPI)
+- [x] Encomiendas recientes
+- [x] Alertas de encomiendas con incidencias o sin actualización reciente
 
 ### Entregables de la Fase 7
 - Módulo de reportes con filtros y exportación
@@ -280,25 +280,25 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
 ### Tareas
 
 #### 8.1 Hardening de Seguridad (RNF-04)
-- [ ] Verificar encriptación de contraseñas con `bcrypt` (Laravel por defecto)
-- [ ] Revisión de protección CSRF en todos los formularios
-- [ ] Verificar protección contra SQLi mediante Eloquent ORM (queries parametrizadas)
-- [ ] Sanitización de inputs para prevenir XSS
-- [ ] Revisión de integridad referencial en BD (Foreign Keys activas en PostgreSQL)
+- [x] Verificar encriptación de contraseñas con `bcrypt` (Laravel por defecto)
+- [x] Revisión de protección CSRF en todos los formularios
+- [x] Verificar protección contra SQLi mediante Eloquent ORM (queries parametrizadas)
+- [x] Sanitización de inputs para prevenir XSS
+- [x] Revisión de integridad referencial en BD (Foreign Keys activas en PostgreSQL)
 
 #### 8.2 Pruebas Funcionales
-- [ ] Pruebas unitarias por módulo (PHPUnit):
+- [x] Pruebas unitarias por módulo (PHPUnit):
   - Registro de usuarios y roles
   - Admisión de encomiendas y generación de Tracking ID
   - Cambio de estados y validación de flujo
   - Consulta de trazabilidad pública
-- [ ] Pruebas de integración del flujo end-to-end: recepción → entrega
-- [ ] Pruebas de rendimiento: tiempo de respuesta < 2 segundos (RNF-01)
+- [x] Pruebas de integración del flujo end-to-end: recepción → entrega
+- [x] Pruebas de rendimiento: tiempo de respuesta < 2 segundos (RNF-01)
 
 #### 8.3 Ajustes de UI/UX
-- [ ] Optimizar formularios para ingreso rápido por teclado (RNF-03)
-- [ ] Verificar responsividad en dispositivos móviles
-- [ ] Revisión de accesibilidad básica
+- [x] Optimizar formularios para ingreso rápido por teclado (RNF-03)
+- [x] Verificar responsividad en dispositivos móviles
+- [x] Revisión de accesibilidad básica
 
 ### Entregables de la Fase 8
 - Sistema sin vulnerabilidades críticas conocidas

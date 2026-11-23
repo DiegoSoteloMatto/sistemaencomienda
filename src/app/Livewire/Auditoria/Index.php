@@ -13,6 +13,11 @@ class Index extends Component
     public string $search = '';
     public string $actionFilter = '';
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->hasRole('Administrador'), 403);
+    }
+
     public function updatingSearch(): void
     {
         $this->resetPage();

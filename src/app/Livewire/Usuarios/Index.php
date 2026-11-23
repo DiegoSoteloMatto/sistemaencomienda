@@ -25,6 +25,11 @@ class Index extends Component
     public string $role = 'Operador';
     public bool $activo = true;
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->hasRole('Administrador'), 403);
+    }
+
     protected function rules(): array
     {
         $userId = $this->editingUserId;
