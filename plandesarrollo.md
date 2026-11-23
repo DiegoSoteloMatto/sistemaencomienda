@@ -76,9 +76,9 @@ El sistema centralizará la administración de usuarios, clientes, paquetes y es
 ### Tareas
 
 #### 2.1 Sistema de Autenticación
-- [ ] Implementar login/logout con Laravel Breeze o Fortify
-- [ ] Protección de rutas mediante middleware `auth`
-- [ ] Manejo de sesiones seguras y protección CSRF
+- [x] Implementar login/logout con Laravel Breeze o Fortify
+- [x] Protección de rutas mediante middleware `auth`
+- [x] Manejo de sesiones seguras y protección CSRF
 
 #### 2.2 Gestión de Roles y Permisos (RBAC)
 Definir los siguientes roles con `spatie/laravel-permission`:
@@ -90,14 +90,14 @@ Definir los siguientes roles con `spatie/laravel-permission`:
 | **Repartidor**         | Ver encomiendas asignadas, actualizar estado (En tránsito, Entregado), acuse de recibo |
 | **Cliente** (público)  | Consulta pública de trazabilidad por código de seguimiento (sin login)      |
 
-- [ ] Crear seeders para roles y permisos iniciales
-- [ ] Crear pantalla de administración de usuarios (CRUD) para el rol Administrador
-- [ ] Aplicar middleware de roles en todas las rutas protegidas
+- [x] Crear seeders para roles y permisos iniciales
+- [x] Crear pantalla de administración de usuarios (CRUD) para el rol Administrador
+- [x] Aplicar middleware de roles en todas las rutas protegidas
 
 #### 2.3 Registro de Auditoría (RF-01.2)
-- [ ] Registrar logs para acciones críticas: creación, modificación, cambio de estado
-- [ ] Almacenar: usuario responsable, acción, fecha/hora, entidad afectada
-- [ ] Pantalla de consulta de logs de auditoría para el Administrador
+- [x] Registrar logs para acciones críticas: creación, modificación, cambio de estado
+- [x] Almacenar: usuario responsable, acción, fecha/hora, entidad afectada
+- [x] Pantalla de consulta de logs de auditoría para el Administrador
 
 ### Migración de Base de Datos
 ```sql
@@ -125,7 +125,7 @@ audit_logs (id, user_id, action, entity_type, entity_id, description, ip_address
 ### Tareas
 
 #### 3.1 Módulo de Clientes
-- [ ] Migración de tabla `clientes`:
+- [x] Migración de tabla `clientes`:
   ```sql
   clientes (
     id, nombre, apellido, documento_tipo (CI/RUC), documento_numero,
@@ -133,15 +133,15 @@ audit_logs (id, user_id, action, entity_type, entity_id, description, ip_address
     created_at, updated_at, deleted_at
   )
   ```
-- [ ] Modelo `Cliente` con SoftDeletes
-- [ ] Componente Livewire para listado de clientes con búsqueda en tiempo real (RF-02.2)
-- [ ] Formulario de creación/edición de clientes (validations Laravel)
-- [ ] Funcionalidad de búsqueda rápida para usar al momento de registrar un envío
+- [x] Modelo `Cliente` con SoftDeletes
+- [x] Componente Livewire para listado de clientes con búsqueda en tiempo real (RF-02.2)
+- [x] Formulario de creación/edición de clientes (validations Laravel)
+- [x] Funcionalidad de búsqueda rápida para usar al momento de registrar un envío
 
 #### 3.2 Interfaz de Usuario
-- [ ] Tabla responsiva con Tailwind CSS + Alpine.js para filtros
-- [ ] Formulario modal o página dedicada para alta/edición
-- [ ] Confirmación de eliminación lógica (SoftDelete)
+- [x] Tabla responsiva con Tailwind CSS + Alpine.js para filtros
+- [x] Formulario modal o página dedicada para alta/edición
+- [x] Confirmación de eliminación lógica (SoftDelete)
 
 ### Entregables de la Fase 3
 - Módulo CRUD de clientes completamente funcional
@@ -156,7 +156,7 @@ audit_logs (id, user_id, action, entity_type, entity_id, description, ip_address
 ### Tareas
 
 #### 4.1 Módulo de Encomiendas
-- [ ] Migración de tabla `encomiendas`:
+- [x] Migración de tabla `encomiendas`:
   ```sql
   encomiendas (
     id, tracking_id (único, auto-generado),
@@ -168,13 +168,13 @@ audit_logs (id, user_id, action, entity_type, entity_id, description, ip_address
     operador_id (FK users), created_at, updated_at
   )
   ```
-- [ ] Generación automática del `tracking_id` único (RF-03.2): formato `ENC-YYYYMMDD-XXXXX`
-- [ ] Componente Livewire para búsqueda y selección de cliente emisor/receptor
-- [ ] Formulario de admisión de encomienda con validaciones completas
-- [ ] Listado de encomiendas con filtros por estado, fecha, origen/destino
+- [x] Generación automática del `tracking_id` único (RF-03.2): formato `ENC-YYYYMMDD-XXXXX`
+- [x] Componente Livewire para búsqueda y selección de cliente emisor/receptor
+- [x] Formulario de admisión de encomienda con validaciones completas
+- [x] Listado de encomiendas con filtros por estado, fecha, origen/destino
 
 #### 4.2 Etiquetas (RF-03.3)
-- [ ] Generación de etiqueta imprimible (PDF o vista HTML) con:
+- [x] Generación de etiqueta imprimible (PDF o vista HTML) con:
   - Código de seguimiento (Tracking ID)
   - Datos del emisor y receptor
   - Origen y destino
