@@ -314,15 +314,15 @@ Recibido en Origen → En Clasificación → En Tránsito / Despachado
 ### Tareas
 
 #### 9.1 Despliegue
-- [ ] Configurar servidor de producción (puede ser VPS con Nginx/Apache + PHP-FPM)
-- [ ] Configurar PostgreSQL en producción con usuario y contraseña seguros
-- [ ] Ejecutar migraciones y seeders iniciales en producción
-- [ ] Configurar respaldos automáticos de la base de datos
+- [x] Configurar servidor de producción (puede ser VPS con Nginx/Apache + PHP-FPM)
+- [x] Configurar PostgreSQL en producción con usuario y contraseña seguros
+- [x] Ejecutar migraciones y seeders iniciales en producción
+- [x] Configurar respaldos automáticos de la base de datos
 
 #### 9.2 Capacitación
-- [ ] Capacitar a operadores en registro de clientes y encomiendas
-- [ ] Capacitar a repartidores en uso del módulo de actualización de estados
-- [ ] Entregar manual de usuario básico
+- [x] Capacitar a operadores en registro de clientes y encomiendas
+- [x] Capacitar a repartidores en uso del módulo de actualización de estados
+- [x] Entregar manual de usuario básico
 
 #### 9.3 Medición de KPIs (Post-Implementación)
 Medir los siguientes indicadores y comparar con la línea base:
