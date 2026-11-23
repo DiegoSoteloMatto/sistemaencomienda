@@ -35,17 +35,17 @@ El sistema centralizará la administración de usuarios, clientes, paquetes y es
 ### Tareas
 
 #### 1.1 Configuración del Entorno de Desarrollo
-- [ ] Instalar PHP 8.3+, Composer, Node.js y NPM
-- [ ] Instalar y configurar PostgreSQL con la base de datos `encomiendabd`
-- [ ] Crear el proyecto Laravel con TALL Stack (`laravel/laravel`)
-- [ ] Instalar dependencias clave:
+- [x] Instalar PHP 8.3+, Composer, Node.js y NPM
+- [x] Instalar y configurar PostgreSQL con la base de datos `encomiendabd`
+- [x] Crear el proyecto Laravel con TALL Stack (`laravel/laravel`)
+- [x] Instalar dependencias clave:
   - `livewire/livewire`
   - `laravel/breeze` (con Livewire/Alpine)
   - `spatie/laravel-permission` (RBAC)
-- [ ] Instalar y configurar Tailwind CSS
+- [x] Instalar y configurar Tailwind CSS
 
 #### 1.2 Configuración de la Base de Datos
-- [ ] Configurar `.env` con los parámetros de conexión a PostgreSQL:
+- [x] Configurar `.env` con los parámetros de conexión a PostgreSQL:
   ```env
   DB_CONNECTION=pgsql
   DB_HOST=127.0.0.1
@@ -54,13 +54,13 @@ El sistema centralizará la administración de usuarios, clientes, paquetes y es
   DB_USERNAME=postgres
   DB_PASSWORD=master
   ```
-- [ ] Verificar conexión con `php artisan db:show`
+- [x] Verificar conexión con `php artisan db:show`
 
 #### 1.3 Estructura y Convenciones del Proyecto
-- [ ] Definir estructura de carpetas para módulos (Clientes, Encomiendas, Trazabilidad, Reportes)
-- [ ] Configurar el sistema de rutas base (web.php, auth)
-- [ ] Configurar plantilla base (layout principal con Tailwind CSS)
-- [ ] Configurar sistema de auditoría (Spatie Activity Log o similar)
+- [x] Definir estructura de carpetas para módulos (Clientes, Encomiendas, Trazabilidad, Reportes)
+- [x] Configurar el sistema de rutas base (web.php, auth)
+- [x] Configurar plantilla base (layout principal con Tailwind CSS)
+- [x] Configurar sistema de auditoría (Spatie Activity Log o similar)
 
 ### Entregables de la Fase 1
 - Proyecto Laravel funcional conectado a PostgreSQL `encomiendabd`
