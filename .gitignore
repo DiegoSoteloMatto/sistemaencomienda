@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+vendor/
+/src/node_modules/
+/src/vendor/
+
+# Environment files
+.env
+.env.*
+!.env.example
+/src/.env
+/src/.env.*
+!/src/.env.example
+
+# Composer
+composer.phar
+/src/composer.phar
+
+# Logs and cache
+*.log
+.phpunit.result.cache
+/.phpunit.cache
+
+# Laravel storage & build
+/src/public/build/
+/src/public/hot
+/src/public/storage
+/src/storage/*.key
+/src/storage/pail
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+.fleet/
+.nova/
+.zed/
